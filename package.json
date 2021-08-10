@@ -1,0 +1,23 @@
+{
+  "name": "curso_nodejs",
+  "version": "1.0.0",
+  "description": "Curso de nodejs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon -e js src/server.js"
+  },
+  "keywords": [
+    "curso",
+    "nodejs",
+    "chat"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "nodemon": "^2.0.12"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
