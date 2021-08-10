@@ -14,9 +14,13 @@ router.get('/', function (req, res) {
 
 router.post('/', function (req, res) {
     const { user, message } = req.body; 
-    controller.addMessage(user, message);
-    
-    res.send('hola')
+    controller.addMessage(user, message)
+    .then(() => {
+        response.success(req, res, 201);
+    })
+    .catch(err => {
+        response.error(req, res, 500, err);
+    });
 });
 
 module.exports = router;
