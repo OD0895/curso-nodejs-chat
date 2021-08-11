@@ -2,17 +2,16 @@
 
 const responseMessages = require('./responseMessages');
 
-exports.success = function(req, res, status) {
+exports.success = function(req, res, status, message) {
   res.status(status).send({
     'error': '',
-    'body': responseMessages(status),
+    'body': message? message : responseMessages(status),
   });
 };
 
-exports.error = function(req, res, status, details) {
-  console.error('[response error] => ' + details);
+exports.error = function(req, res, status, message) {
   res.status(status).send({
-    'error': responseMessages(status),
+    'error': message? message : responseMessages(status),
     'body': '',
   });
 };
