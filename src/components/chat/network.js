@@ -1,25 +1,28 @@
-const express = require('express');
+const express = require("express");
+const response = require("../../network/response");
+const controller = require("./controller");
 const router = express.Router();
-const response = require('../../network/response');
-const controller = require('./controller');
 
-router.get('/', async (req, res) => {
-  try {
-    const chatsList = await controller.getChats();
-    response.success(req, res, chatsList, 200);
-  } catch (error) {
-    response.error(req, res, 'Unexpected error', 500, error);
-  }
+router.post("/", function (req, res) {
+  controller
+    .addChat(req.body.users)
+    .then((data) => {
+      response.success(req, res, 201, data);
+    })
+    .catch((err) => {
+      response.error(req, res, 500, err);
+    });
 });
 
-router.post('/', async (req, res) => {
-  try {
-    const { users } = req.body;
-    const newChat = await controller.addChat({ users });
-    response.success(req, res, newChat, 201);
-  } catch (error) {
-    response.error(req, res, 'Información inválida', 400, error.message);
-  }
+router.get("/:userId", function (req, res) {
+  controller
+    .listChats(req.params.userId)
+    .then((users) => {
+      response.success(req, res, 200, users);
+    })
+    .catch((err) => {
+      response.error(req, res, 500, err);
+    });
 });
 
 module.exports = router;
