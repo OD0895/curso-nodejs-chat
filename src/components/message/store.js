@@ -1,4 +1,4 @@
-const Model = require('./model');
+const Model = require("./model");
 
 function addMessage(message) {
   const myMessage = new Model(message);
@@ -6,17 +6,27 @@ function addMessage(message) {
 }
 
 async function getMessages(filterUser) {
-  let filter = {};
-  if(filterUser) 
-    filter = { user: filterUser };
+  return new Promise((resolve, reject) => {
+    let filter = {};
+    if (filterUser){
+      filter = { user: filterUser };
+    }
 
-  const messages = await Model.find(filter);
-  return messages;
+    Model.find(filter)
+      .populate('user')
+      .exec((error, populated) => {
+        if (error) {
+          reject(error);
+          return false;
+        }
+        resolve(populated);
+      });
+  });
 }
 
 async function updateText(id, message) {
   const foundMessage = await Model.findOne({
-    _id: id
+    _id: id,
   });
 
   foundMessage.message = message;
@@ -26,7 +36,7 @@ async function updateText(id, message) {
 
 function deleteMessage(id) {
   return Model.deleteOne({
-    _id: id
+    _id: id,
   });
 }
 
@@ -34,5 +44,5 @@ module.exports = {
   add: addMessage,
   list: getMessages,
   updateText: updateText,
-  remove: deleteMessage
+  remove: deleteMessage,
 };
